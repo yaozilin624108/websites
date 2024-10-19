@@ -1,26 +1,26 @@
-# Introduction
+#介绍
 
-Shizuku can help normal apps uses system APIs directly with adb/root privileges with a Java process started with app_process.
+Shizuku可以帮助普通应用程序使用 adb/root you you you API，Java you appy_process you
 
-The name Shizuku comes from [a character](https://danbooru.donmai.us/posts/3553474).
+Shizuku这个名字来源于[一个角色](https://danbooru.donmai.us/posts/3553474).
 
-## Why was Shizuku born?
+##静久为什么出生？
 
-The birth of Shizuku has two main purposes.
+“世祖”的诞生主要有两个目的。
 
-1. Provide a convenient way to use system APIs
-2. Convenient for the development of some apps that only requires adb permissions
+1.提供一种使用系统 API
+2.方便一些只需要 adb
 
-## Shizuku vs. "Old school" method
+##Shizuku vs“老派”方法
 
-### "Old school" method
+###“老派”方法
 
-For example, to enable/disable components, some apps that require root privileges execute `pm disable` directly in `su`.
+例如，为了启用/禁用组件，一些需要root权限的应用程序执行`pm禁用`直接`苏`.
 
-1. Execute `su`
-2. Execute `pm disable`
-3. (pre-Pie) Start the Java process with app_process ([see here](https://android.googlesource.com/platform/frameworks/base/+/oreo-release/cmds/pm/pm))
-4. (Pie+) Execute the native program `cmd` ([see here](https://android.googlesource.com/platform/frameworks/native/+/pie-release/cmds/cmd/))
+1.执行`苏`
+2.执行`pm禁用`
+3.（pre-Pie）用app_process（[看这里](https://android.googlesource.com/platform/frameworks/base/+/oreo-release/cmds/pm/pm))
+4.（Pie+）执行本机程序`cmd` ([看这里](https://android.googlesource.com/platform/frameworks/native/+/pie-release/cmds/cmd/))
 5. Process the parameters, interact with the system server through the binder, and process the result to output the text result.
 
 Each of the "Execute" means a new process creation, su internally uses sockets to interact with the su daemon, and a lot of time and performance are consumed in such process. (Some poorly designed app will even execute `su` **every time** for each command)
@@ -32,14 +32,14 @@ The disadvantages of this type of method are:
 3. Features are subject to available commands
 4. Even if adb has sufficient permissions, the app requires root privileges to run
 
-### Shizuku method
+###Shizuku法
 
-The Shizuku app will direct the user to run a process (Shizuku service process) using root or adb.
+Shizuku应用程序将引导用户使用root或adb运行一个进程（Shizuku服务进程）。
 
-1. When the app process starts, the Shizuku service process sends the binder to the app process.
-2. The app interacts with the Shizuku service through the binder, and the Shizuku service process interacts with the system server through the binder.
+1.当app进程启动时，Shizuku服务进程将活页夹发送到app进程。
+2.app通过绑定器与Shizuku服务交互，Shizuku服务进程通过绑定器与系统服务器交互。
 
-The advantages of Shizuku are:
+Shizuku的优点是：
 
-1. Minimal extra time and performance consumption
-2. It is almost identical to the direct invocation API experience (app developers only need to add a small amount of code)
+1.最小的额外时间和性能消耗
+2.它几乎与直接调用 API在我的面前（在我的面前）
